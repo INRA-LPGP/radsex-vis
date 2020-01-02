@@ -22,6 +22,8 @@
 #'
 #' @param point.size Size of a point in the plot (default 0.5)
 #'
+#' @param lg_numbers If TRUE, displays LG numbers instead of names (default FALSE)
+#'
 #' @param point.palette Color palette for the dots (default c("dodgerblue3", "darkgoldenrod2"))
 #'
 #' @param background.palette Color palette for the background (default c("grey85", "grey100"))
@@ -43,6 +45,7 @@
 plot_genome_manhattan <- function(mapping_file_path, contig_lengths_file_path, chromosomes_names_file_path = NULL, plot.unplaced = TRUE,
                                   output_file_path = NULL, width = 14, height = 7, dpi = 300,
                                   point.size = 0.5, signif.threshold = 0.05,
+                                  lg_numbers = TRUE,
                                   point.palette = c("dodgerblue3", "darkgoldenrod2"), background.palette = c("grey85", "grey100"),
                                   significance.line.color = "black", significance.line.type = 2, significance.text.position = c(0.05, 0.05)) {
 
@@ -70,6 +73,7 @@ plot_genome_manhattan <- function(mapping_file_path, contig_lengths_file_path, c
                                              point.size = point.size, signif.threshold = signif.threshold,
                                              point.palette = point.palette,
                                              background.palette = background.palette,
+                                             lg_numbers = lg_numbers,
                                              significance.line.color = significance.line.color,
                                              significance.line.type = significance.line.type,
                                              significance.text.position = significance.text.position)

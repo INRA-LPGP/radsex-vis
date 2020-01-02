@@ -10,6 +10,8 @@
 #'
 #' @param background.palette Color palette for the background (default c("grey85", "grey100"))
 #'
+#' @param lg_numbers If TRUE, displays LG numbers instead of names (default FALSE)
+#'
 #' @param signif.threshold Significance threshold for association with sex (default 0.05).
 #'
 #' @param significance.line.color Color for significance line, set to NULL for no line (default "black").
@@ -33,6 +35,7 @@
 mapping_manhattan_plot <- function(data, point.size = 0.5, signif.threshold = 0.05,
                                    point.palette = c("dodgerblue3", "darkgoldenrod2"),
                                    background.palette = c("grey85", "grey100"),
+                                   lg_numbers = FALSE,
                                    significance.line.color = "black",
                                    significance.line.type = 2,
                                    significance.text.position = c(0.05, 0.05)) {
@@ -51,6 +54,12 @@ mapping_manhattan_plot <- function(data, point.size = 0.5, signif.threshold = 0.
     # Attribute alternating colors to each contig
     order <- seq(1, length(data$lengths$plot))
     names(order) <- names(data$lengths$plot)
+    if (length(data$names) > 3) {
+        names(order) = data$names[names(order)]
+    }
+    if (lg_numbers == TRUE) {
+        names(order) <- c(seq(1, length(order) - 1), "U")
+    }
     manhattan_data$Color <- order[manhattan_data$Contig] %% 2
     manhattan_data$Color <- as.factor(as.character(manhattan_data$Color))
 
