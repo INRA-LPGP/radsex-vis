@@ -89,17 +89,17 @@ mapping_contig <- function(data, contig, region = NULL, title = NULL,
     x_scale <- generate_x_scale(region, contig_name)
 
     # Generate the top plot (sex bias)
-    g <- ggplot2::ggplot(contig_data, ggplot2::aes(x = Original_position, y = SexBias, color = SexBias)) +
+    g <- ggplot2::ggplot(contig_data, ggplot2::aes(x = Original_position, y = Bias, color = Bias)) +
         cowplot::theme_cowplot() +
         ggplot2::geom_point(size = point.size) +
-        ggplot2::scale_y_continuous(name = "Sex Bias", limits = c(-1, 1)) +
+        ggplot2::scale_y_continuous(name = "Bias", limits = c(-1, 1)) +
         ggplot2::theme(axis.title.x = ggplot2::element_blank(), legend.position = "none") +
         ggplot2::geom_hline(yintercept = 0, linetype = 3, color = "grey50") +
         x_scale
 
     # Add color scale if specified
     if (color.sex.bias) {
-        g <- g + ggplot2::scale_color_gradientn(name = "Sex Bias", colours = colorRampPalette(sex.bias.palette)(20),
+        g <- g + ggplot2::scale_color_gradientn(name = "Bias", colours = colorRampPalette(sex.bias.palette)(20),
                                                 limits = c(-1, 1))
     }
 
