@@ -36,6 +36,7 @@
 coverage_heatmap <- function(data, popmap = NULL, title = NULL,
                              males.color = "dodgerblue3", females.color = "red3",
                              coverage.palette = c("white", "royalblue2", "black", "gold2", "red3"),
+                             color.presence = FALSE, min.depth = 10, binary.color = "grey30", alpha = 0.7,
                              individual.names = TRUE, sequence.names = FALSE,
                              individual.dendrogram = TRUE, sequence.dendrogram = TRUE) {
 
@@ -49,9 +50,28 @@ coverage_heatmap <- function(data, popmap = NULL, title = NULL,
         sex_palette <- temp[popmap[individual_names]]
     }
 
+    if (color.presence) {
+
+        data$data$presence <- data$data$coverage >= min.depth
+        heatmap <- ggplot2::ggplot(data$data, ggplot2::aes(x = individual, y = id, fill = presence)) +
+            ggplot2::scale_fill_manual(name = "", breaks = c("TRUE", "FALSE"), labels = c("Present", "Absent"),
+                                       values=c("TRUE"=binary.color, "FALSE"="white")) +
+            ggplot2::geom_tile(color = "grey10", size = 0.05)  +
+            ggplot2::theme(legend.title = ggplot2::element_blank())
+
+    } else {
+
+        heatmap <- ggplot2::ggplot(data$data, ggplot2::aes(x = individual, y = id, fill = coverage)) +
+            ggplot2::scale_fill_gradientn(name = "Depth", colours = coverage.palette,
+                                          values = c(0, 0.00001, data$distribution[3]/data$distribution[6], data$distribution[5]/data$distribution[6], 1)) +
+            ggplot2::geom_tile(color = "grey30", size = 0.02) +
+            theme(legend.title = ggplot2::element_text(size = 14, face = "bold"))
+
+    }
+
+
     # Compute the main heatmap object
-    heatmap <- ggplot2::ggplot(data$data, ggplot2::aes(x = individual, y = id, fill = coverage)) +
-        ggplot2::geom_tile(color = "grey30", size = 0.02) +
+    heatmap <- heatmap +
         ggplot2::theme_bw() +
         ggplot2::theme(axis.text.x = ggplot2::element_blank(),
               axis.text.y = ggplot2::element_blank(),
@@ -61,11 +81,9 @@ coverage_heatmap <- function(data, popmap = NULL, title = NULL,
               plot.margin = ggplot2::margin(5, 15, 15, 30),
               panel.border = ggplot2::element_rect(size = 0.75, color = "black"),
               legend.position = "right",
-              legend.title = ggplot2::element_text(size = 14, face = "bold"),
               legend.text = ggplot2::element_text(size = 11),
               legend.key.height = ggplot2::unit(0.1, "npc"),
               legend.key.width = ggplot2::unit(0.06, "npc")) +
-        ggplot2::scale_fill_gradientn(name = "Depth", colours = coverage.palette, values = c(0, 0.00001, data$distribution[3]/data$distribution[6], data$distribution[5]/data$distribution[6], 1)) +
         ggplot2::scale_x_discrete(expand = c(0, 0)) +
         ggplot2::scale_y_discrete(expand = c(0, 0))
 

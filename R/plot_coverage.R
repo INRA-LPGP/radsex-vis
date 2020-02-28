@@ -59,6 +59,7 @@ plot_coverage <- function(input_file_path, output_file_path = NULL, popmap_file_
                           distance.method = "euclidean", clustering.method = "ward.D",
                           males.color = "dodgerblue3", females.color = "red3",
                           coverage.palette = c("white", "royalblue2", "black", "gold2", "red3"),
+                          color.presence = FALSE, min.depth = 10, binary.color = "grey30", alpha = 0.7,
                           individual.names = TRUE, sequence.names = FALSE,
                           individual.dendrogram = TRUE, sequence.dendrogram = TRUE) {
 
@@ -94,11 +95,15 @@ plot_coverage <- function(input_file_path, output_file_path = NULL, popmap_file_
                                 individual.names = individual.names,
                                 sequence.names = sequence.names,
                                 individual.dendrogram = individual.dendrogram,
-                                sequence.dendrogram = sequence.dendrogram)
+                                sequence.dendrogram = sequence.dendrogram,
+                                color.presence = color.presence,
+                                min.depth = min.depth,
+                                binary.color = binary.color,
+                                alpha = alpha)
 
     # Save the plot to output file if specified, otherwise display the plot
     if (!is.null(output_file_path)) {
-        cowplot::ggsave(output_file_path, plot = heatmap, width = width, height = height, dpi = dpi)
+        ggplot2::ggsave(output_file_path, plot = heatmap, width = width, height = height, dpi = dpi)
     } else {
         grid::grid.newpage()
         grid::grid.draw(heatmap)
